@@ -9,10 +9,10 @@ use crate::words::{get_random_word, validate_word, WordValidation};
 use crate::types::{Guess, display_guesses};
 
 fn main() {
-    let mut unsolved = true;
+    let mut solved = false;
     let solution = get_random_word();
     println!("Start guessing...");
-    while unsolved {
+    while !solved {
         let mut user_input = String::new();
         match io::stdin().read_line(&mut user_input) {
             Ok(_) => {
@@ -23,9 +23,7 @@ fn main() {
                     WordValidation::Valid(guess) => {
                         let guesses = check_guess(&guess, &solution);
                         println!("{}", display_guesses(&guesses));
-                        if guesses.iter().all(|guess| guess.is_correct()) {
-                            unsolved = false;
-                        }
+                        solved = guesses.iter().all(|guess| guess.is_correct());
                     }
                 }
             }
