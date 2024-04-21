@@ -3,7 +3,7 @@ use std::fmt;
 
 pub enum Guess {
     Correct(char),
-    InWord(char),
+    InTheWord(char),
     Wrong(char),
 }
 
@@ -11,7 +11,7 @@ impl Guess {
     pub fn get_char(&self) -> char {
         match *self {
             Guess::Correct(c) => c,
-            Guess::InWord(c) => c,
+            Guess::InTheWord(c) => c,
             Guess::Wrong(c) => c,
         }
     }
@@ -29,15 +29,17 @@ impl Guess {
     }
 }
 
-pub type Score = Vec<Guess>;
-
 impl fmt::Display for Guess {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let guess = match self {
             Guess::Correct(c) => c.to_string().to_uppercase().green(),
-            Guess::InWord(c) => c.to_string().to_uppercase().yellow(),
+            Guess::InTheWord(c) => c.to_string().to_uppercase().yellow(),
             Guess::Wrong(c) => c.to_string().to_uppercase().red(),
         };
-        write!(f, "{}", guess)
+        write!(f, " {} ", guess)
     }
+}
+
+pub fn display_guesses(guesses: &Vec<Guess>) -> String {
+    guesses.iter().map(|g| g.to_string()).collect()
 }

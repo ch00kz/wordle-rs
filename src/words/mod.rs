@@ -1,15 +1,31 @@
 use rand::Rng;
 
+pub enum WordValidation {
+    Valid(String),
+    NotInDict,
+    NotFiveChars,
+}
+
+pub fn validate_word(word: &str) -> WordValidation {
+    if word.len() != 5 {
+        return WordValidation::NotFiveChars;
+    }
+    if !is_in_dictionary(word) {
+        return WordValidation::NotInDict;
+    }
+    return WordValidation::Valid(String::from(word));
+}
+
 pub fn get_random_word() -> &'static str {
     let i = rand::thread_rng().gen_range(0..2315);
     WORDS[i]
 }
 
-pub fn is_in_dictionary(word: &str) -> bool {
-  match WORDS.binary_search(&word) {
-    Ok(_) => true,
-    Err(_) => false,
-  }
+fn is_in_dictionary(word: &str) -> bool {
+    match WORDS.binary_search(&word) {
+        Ok(_) => true,
+        Err(_) => false,
+    }
 }
 
 const WORDS: [&str; 2315] = [
